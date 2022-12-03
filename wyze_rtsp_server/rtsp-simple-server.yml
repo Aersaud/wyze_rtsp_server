@@ -1,0 +1,62 @@
+###############################################
+# General parameters
+
+# Sets the verbosity of the program; available values are "error", "warn", "info", "debug".
+logLevel: info
+# Destinations of log messages; available values are "stdout", "file" and "syslog".
+logDestinations: [stdout]
+# If "file" is in logDestinations, this is the file which will receive the logs.
+logFile: rtsp-simple-server.log
+
+# Timeout of read operations.
+readTimeout: 10s
+# Timeout of write operations.
+writeTimeout: 10s
+# Number of read buffers.
+# A higher value allows a wider throughput, a lower value allows to save RAM.
+readBufferCount: 512
+
+###############################################
+# RTSP parameters
+
+# Disable support for the RTSP protocol.
+rtspDisable: no
+# List of enabled RTSP transport protocols.
+# UDP is the most performant, but doesn't work when there's a NAT/firewall between
+# server and clients, and doesn't support encryption.
+# UDP-multicast allows to save bandwidth when clients are all in the same LAN.
+# TCP is the most versatile, and does support encryption.
+# The handshake is always performed with TCP.
+protocols: [multicast, tcp]
+# Encrypt handshakes and TCP streams with TLS (RTSPS).
+# Available values are "no", "strict", "optional".
+encryption: "no"
+# Address of the TCP/RTSP listener. This is needed only when encryption is "no" or "optional".
+rtspAddress: :8554
+# Address of the TCP/TLS/RTSPS listener. This is needed only when encryption is "strict" or "optional".
+#rtspsAddress: :8322
+# Address of the UDP/RTP listener. This is needed only when "udp" is in protocols.
+#rtpAddress: :8000
+# Address of the UDP/RTCP listener. This is needed only when "udp" is in protocols.
+#rtcpAddress: :8001
+# IP range of all UDP-multicast listeners. This is needed only when "multicast" is in protocols.
+multicastIPRange: 224.1.0.0/16
+# Port of all UDP-multicast/RTP listeners. This is needed only when "multicast" is in protocols.
+multicastRTPPort: 8002
+# Port of all UDP-multicast/RTCP listeners. This is needed only when "multicast" is in protocols.
+multicastRTCPPort: 8003
+# Path to the server key. This is needed only when encryption is "strict" or "optional".
+# This can be generated with:
+# openssl genrsa -out server.key 2048
+# openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
+#serverKey: server.key
+# Path to the server certificate. This is needed only when encryption is "strict" or "optional".
+#serverCert: server.crt
+# Authentication methods.
+authMethods: [basic, digest]
+
+###############################################
+
+# YOU MUST ADD YOUR PATH HERE
+paths:
+  #example:
