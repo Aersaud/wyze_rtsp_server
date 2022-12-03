@@ -2,6 +2,7 @@
 
 /tmp/ffmpeg-start.sh &
 sleep 10
+x=0
 while true
 do
     frameA=$(tail /tmp/ffmpeg.log -n 1 | sed -nr 's/.*frame=(.*)fps.*/\1/p')
@@ -12,20 +13,24 @@ do
 
     if [ "$frameA" = "$frameB" ]
     then
-        echo "Stream has hung"
-        printf "%s - Stream has hung\n" "$(date)" >> /dev/stdout
+        x=0
+        echo "Stream has hung."
         pkill ffmpeg
-        echo "Killed ffmpeg..."
-        printf "%s - Killed ffmpeg...\n" "$(date)" >> /dev/stdout
-        echo "Waiting 5 secs"
+        echo "Killed ffmpeg.."
+        echo "Waiting 5 secs before restarting..."
         sleep 5
         /tmp/ffmpeg-start.sh &
         echo "Started ffpmeg.."
-        printf "%s - Started ffmpeg..\n" "$(date)" >> /dev/stdout
-        echo "Waiting 15 secs"
+        echo "Waiting 15 secs before rechecking..."
         sleep 15
     else
-        printf "%s - Stream is running" >> /dev/stdout
+       if [ $x -eq 0 ]
+       then
+        echo "Stream is running..."
+        x=1
+       else
+           :
+       fi
     fi
 
     sleep 2
